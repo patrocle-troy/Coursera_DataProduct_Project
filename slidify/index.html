@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Estimating an iris petal length</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Estimating an iris petal length">
+  <meta name="author" content="">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Estimating an iris petal length</h1>
+    <h2>Coursera project for Developing Data Products</h2>
+    <p><br/></p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>The iris petal length predictor</h2>
+  </hgroup>
+  <article data-timings="">
+    <ol>
+<li>Unique web application</li>
+<li>Objective: Estimate the petal length of an iris from its species and its petal width</li>
+<li>Highly interactive</li>
+<li>Powerful explanatory graphics</li>
+<li>Public and free !</li>
+</ol>
+
+<p><a href="https://patrocle-troy.shinyapps.io/project/">https://patrocle-troy.shinyapps.io/project/</a></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The methodology</h2>
+  </hgroup>
+  <article data-timings="">
+    <ol>
+<li>R programming language</li>
+<li>Data set: Edgar Anderson&#39;s Iris Data (R-base dataset)</li>
+<li>Prediction algorithm: linear regression 
+
+<ol>
+<li>Length against width</li>
+<li>One regression per species</li>
+</ol></li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>The code</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Function: <code>predictLength</code> = linear regression for each species</li>
+<li>Input: <code>inSpecies</code> = species (as an integer), <code>inWidth</code> = petal width (in cm)</li>
+<li>Output: <code>dpredict</code> = iris dataframe with the estimated petal length</li>
+</ul>
+
+<pre><code class="r">predictLength&lt;-function(inSpecies,inWidth)
+{ inSpecFact&lt;-switch(inSpecies,&#39;1&#39;=&#39;setosa&#39;,&#39;2&#39;=&#39;versicolor&#39;,&#39;3&#39;=&#39;virginica&#39;);
+  df = iris[,c(&#39;Petal.Length&#39;,&#39;Petal.Width&#39;,&#39;Species&#39;)]; colnames(df)&lt;-c(&#39;length&#39;,&#39;width&#39;,&#39;species&#39;);
+  lmselect&lt;-lm(length~width,data=df[df$species==inSpecFact,]); 
+  outLength&lt;-predict(lmselect,data.frame(width=inWidth));
+  dpredict&lt;-data.frame(width=inWidth,length=outLength,species=inSpecFact); }
+</code></pre>
+
+<p>Example: <code>inSpecies=2</code> (versicolor); <code>inWidth=2.1</code>; output = length </p>
+
+<pre><code class="r">print(predictLength(2,2.1)$length)
+</code></pre>
+
+<pre><code>## [1] 5.706857
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>The plot</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="assets/fig/unnamed-chunk-3-1.png" alt="plot of chunk unnamed-chunk-3"> </p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='The iris petal length predictor'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='The methodology'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='The code'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='The plot'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
